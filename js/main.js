@@ -1,9 +1,15 @@
+
+function random(from,to){
+    return Math.floor(Math.random() * (to - from) + from);
+}
+
 class Card{
     constructor(suit,rank) {
         this.suit = suit
         this.rank = rank
     }
 }
+
 class Deck{
     constructor(){
         this.deck = []
@@ -29,6 +35,20 @@ class Deck{
             console.log(this.deck[i].suit,this.deck[i].rank)
         }
     }
+    shuffle(){
+        for (let i in this.deck){
+            let s  = random(0,this.deck.length)
+            let ph = this.deck[s]
+            this.deck[s] = this.deck[i];
+            this.deck[i] = ph
+        }
+    }//TODO: add this
+}
+class Poker{
+    constructor(){
+        this.deck = new Deck()
+    }
 }
 deck = new Deck()
+deck.shuffle()
 deck.printCards()
