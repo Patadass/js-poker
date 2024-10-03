@@ -1,4 +1,8 @@
 
+function init() {
+    document.getElementById("diamond").src = "../cards/club.svg";
+}
+
 function random(from,to){
     return Math.floor(Math.random() * to) + from;
 }
