@@ -69,6 +69,14 @@ class Player{
     resetCards(){
         this.cards = []
     }
+    makeBB(){
+        this.bigBlind = true
+        this.smallBlind = false
+    }
+    makeSB(){
+        this.smallBlind = true
+        this.bigBlind = false
+    }
 }
 
 class Poker{
@@ -76,6 +84,10 @@ class Poker{
         this.deck = new Deck()
         this.players = []
         this.community = []
+        this.minBet = 15
+        this.pot = 0
+        this.currentBet = 0
+        this.position = 0
     }
     addPlayer(player){
         this.players.push(player)
@@ -104,6 +116,27 @@ class Poker{
             i++
         }
     }
+    bet(bet){
+        if(this.players[this.position].chips < bet){
+            return false;
+        }
+        this.players[this.position].chips -= bet
+        this.pot += bet
+        this.currentBet = bet
+        return true
+    }
+    raise(bet){
+        if(bet < this.currentBet*2 || this.players[this.position].chips < bet){
+            return false;
+        }
+        this.players[this.position].chip -= bet
+        this.pot += bet
+        this.currentBet = bet
+        return true
+    }
+    nextTurn(){
+
+    }
     dealTurn(){
         this.deck.popTopCard()
         this.community.push(this.deck.getTopCard())
@@ -111,16 +144,17 @@ class Poker{
     }
     printGame() {
         for (let i in this.players) {
-            console.log(this.players[i].name, this.players[i].cards[0], this.players[i].cards[1])
+            console.log(this.players[i].name,this.players[i].chips, this.players[i].cards[0], this.players[i].cards[1])
         }
         for(let i in this.community){
             console.log(this.community[i].suit, this.community[i].rank)
         }
+        console.log(this.pot)
     }
 }
 game = new Poker()
-game.addPlayer(new Player("Ivan"))
-game.addPlayer(new Player("David"))
+game.addPlayer(new Player("Ivan",100))
+game.addPlayer(new Player("David",100))
 game.deck.shuffle()
 game.dealCards()
 game.printGame()
