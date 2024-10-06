@@ -7,3 +7,57 @@
     width: 1in;
     height: 1in;
 }
+
+#floor{
+    display: flex;
+}
+#community{
+    display: grid;
+    grid-column-gap: 1rem;
+    grid-template-columns: repeat(5, 1.25in);
+}
+.player{
+    margin: 1rem 0 0 1rem;
+    display: grid;
+    grid-template-columns: 1.25in 1.25in;
+    grid-template-rows: 1rem 1.75in 2rem;
+    grid-row-gap: 1rem;
+    grid-column-gap: 1rem;
+}
+.player-name{
+    grid-row: 1/1;
+}
+.player-chips{
+    grid-row: 1/1;
+}
+.card{
+    width: 1.25in;
+    height: 1.75in;
+    border: 2px black solid;
+    display: grid;
+    grid-template-columns:1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+}
+.suit{
+    width: 30px;
+    height: 30px;
+    margin: 5px 0 0 5px;
+}
+.number{
+    grid-column: 2/2;
+    grid-row: 2/3;
+    font-size: 40pt;
+    margin: 10px 0 0 10px;
+}
+.down{
+    margin: -5px 0 0 -5px;
+    grid-column: 3/3;
+    grid-row: 4/4;
+}
+
+#play-btn{
+    width: 1in;
+    height: 1in;
+    color:red;
+    margin-left:10px;
+}

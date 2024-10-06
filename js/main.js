@@ -1,6 +1,98 @@
-
 function init() {
-    document.getElementById("diamond").src = "../cards/club.svg";
+    const floor = document.createElement("div")
+    floor.id = "floor";
+    document.body.appendChild(floor)
+    addPlayer("ivan",100)
+    addPlayer("david",100)
+}
+
+function addPlayer(name, chips){
+    game.addPlayer(new Player(name, chips))
+    let n = game.players.length - 1
+    let player = document.createElement("div")
+    let innerName = document.createElement("div")
+    let innerChips = document.createElement("div")
+    let card = document.createElement("div")
+    let suit = document.createElement("div")
+    let img = document.createElement("img")
+    let number = document.createElement("div")
+    player.classList.add("player")
+    innerName.classList.add("player-name")
+    innerName.textContent = name
+    innerChips.classList.add("player-chips")
+    innerChips.textContent = "chips: " + chips
+    card.classList.add("card")
+    suit.classList.add("suit")
+    number.classList.add("number")
+    number.innerHTML = "0"
+    img.src = "../cards/club.svg"
+    document.getElementById("floor").appendChild(player)
+    player.appendChild(innerName)
+    player.appendChild(innerChips)
+    player.appendChild(card)
+    card.appendChild(suit)
+    suit.appendChild(img)
+    card.appendChild(number)
+    card = document.createElement("div")
+    suit = document.createElement("div")
+    img = document.createElement("img")
+    number = document.createElement("div")
+    card.classList.add("card")
+    suit.classList.add("suit")
+    number.classList.add("number")
+    number.innerHTML = "0"
+    img.src = "../cards/club.svg"
+    player.appendChild(card)
+    card.appendChild(suit)
+    suit.appendChild(img)
+    card.appendChild(number)
+
+    let btn = document.createElement("button")
+    btn.textContent = "Check"
+    btn.addEventListener("click", () => {
+        console.log(game.players[n].name)
+    })
+    player.appendChild(btn)
+}
+
+function displayCommunityFlop(){
+    const innerCommunity = document.getElementById("community")
+    for(let i in game.community){
+        let card = document.createElement("div")
+        let suit = document.createElement("div")
+        let img = document.createElement("img")
+        let number = document.createElement("div")
+        card.classList.add("card")
+        suit.classList.add("suit")
+        number.classList.add("number")
+        number.innerHTML = game.community[i].getRank()
+        img.src = "../cards/"+game.community[i].getSuit()+".svg"
+        innerCommunity.appendChild(card)
+        card.appendChild(suit)
+        suit.appendChild(img)
+        card.appendChild(number)
+    }
+}
+function displayCommunityTurn(i){//i is 3 for Turn and 4 for river
+    const innerCommunity = document.getElementById("community")
+    let card = document.createElement("div")
+    let suit = document.createElement("div")
+    let img = document.createElement("img")
+    let number = document.createElement("div")
+    card.classList.add("card")
+    suit.classList.add("suit")
+    number.classList.add("number")
+    number.innerHTML = game.community[i].getRank()
+    img.src = "../cards/"+game.community[i].getSuit()+".svg"
+    innerCommunity.appendChild(card)
+    card.appendChild(suit)
+    suit.appendChild(img)
+    card.appendChild(number)
+}
+
+function flush(){
+    let innerCommunity = document.getElementById("community")
+    innerCommunity.removeChild(innerCommunity.firstChild)
 }
 
 function random(from,to){
@@ -12,6 +104,12 @@ class Card{
         this.suit = suit
         this.rank = rank
     }
+    getRank(){
+        return this.rank
+    }
+    getSuit(){
+        return this.suit
+    }
 }
 
 class Deck{
@@ -20,7 +118,7 @@ class Deck{
         this.makeCards()
     }
     makeCards(){
-        let suit = ["h","d","c","s"]
+        let suit = ["heart","diamond","club","spade"]
         let j = 1
         let i = 0
         let k = 0
@@ -107,15 +205,7 @@ class Poker{
             this.deck.popTopCard()
         }
     }
-    dealFlop(){
-        this.deck.popTopCard()
-        let i = 0
-        while(i < 3){
-            this.community.push(this.deck.getTopCard())
-            this.deck.popTopCard()
-            i++
-        }
-    }
+
     bet(bet){
         if(this.players[this.position].chips < bet){
             return false;
@@ -134,13 +224,30 @@ class Poker{
         this.currentBet = bet
         return true
     }
-    nextTurn(){
+    nextDeal(){
 
     }
-    dealTurn(){
+    dealCommunityFlop(){
+        this.deck.popTopCard()
+        let i = 0
+        while(i < 3){
+            this.community.push(this.deck.getTopCard())
+            this.deck.popTopCard()
+            i++
+        }
+        displayCommunityFlop()
+    }
+    dealCommunityTurn(){
         this.deck.popTopCard()
         this.community.push(this.deck.getTopCard())
         this.deck.popTopCard()
+        displayCommunityTurn(3)
+    }
+    dealCommunityRiver(){
+        this.deck.popTopCard()
+        this.community.push(this.deck.getTopCard())
+        this.deck.popTopCard()
+        displayCommunityTurn(4)
     }
     printGame() {
         for (let i in this.players) {
@@ -153,8 +260,10 @@ class Poker{
     }
 }
 game = new Poker()
-game.addPlayer(new Player("Ivan",100))
-game.addPlayer(new Player("David",100))
+//game.addPlayer(new Player("Ivan",100))
+//game.addPlayer(new Player("David",100))
 game.deck.shuffle()
 game.dealCards()
 game.printGame()
+
+
