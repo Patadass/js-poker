@@ -3,6 +3,11 @@
     padding:0;
 }
 
+#test_button{
+    width: 100px;
+    height: 100px;
+}
+
 #diamond{
     width: 1in;
     height: 1in;
